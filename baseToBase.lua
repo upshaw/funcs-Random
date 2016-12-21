@@ -18,14 +18,14 @@ local function baseToBase(n,bf,bt)
 	print(t)
 	local i,h=math.modf(t)
 	while i>0 do
-		table.insert(x,1,(i%bt>9 and c[i%bt-10]) or i%bt)
+		table.insert(x,1,(i%bt>9 and c[i%bt-9]) or i%bt)
 		i=(i-i%bt)/bt
 	end
 	if h==0 then return table.concat(x) end
 	x[#x+1]="."
 	while g<10 or h~=0 do
 		f,h=math.modf(h*bt)
-		x[#x+1]=f>9 and c[f-10] or f
+		x[#x+1]=f>9 and c[f-9] or f
 		g=g+1
 	end
 	return table.concat(x)
