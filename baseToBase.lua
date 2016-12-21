@@ -12,10 +12,8 @@ local function baseToBase(n,bf,bt)
 	end)
 	for i=#n:gsub("%.",""),1,-1 do
 		local d=n:find("%.") and (n:find("%.")-1)-i or #n:gsub("%.","")-i
-		print(i,d,#n:gsub("%.","")-d)
 		t=t+(bf^(d))*tonumber(n:gsub("%.",""):sub(i,i))
 	end
-	print(t)
 	local i,h=math.modf(t)
 	while i>0 do
 		table.insert(x,1,(i%bt>9 and c[i%bt-9]) or i%bt)
