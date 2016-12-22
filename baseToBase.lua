@@ -16,7 +16,7 @@ local function baseToBase(n,bf,bt)
 	end
 	local i,h=math.modf(t)
 	while i>0 do
-		table.insert(x,1,(i%bt>9 and c[i%bt-9]) or i%bt)
+		table.insert(x,1,(i%bt>9 and c[i%bt-9]) or string.format("%g",i%bt))
 		i=(i-i%bt)/bt
 	end
 	if h==0 then return table.concat(x) end
