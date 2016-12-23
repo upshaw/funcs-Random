@@ -1,5 +1,6 @@
 --brandon upshaw(newc)
 
+--decimal compatible!
 local function baseToBase(n,f,t)
 	local b,c,a,p={},{},0
 	n,f,t=type(n)=='number' and string.format("%."..#string.match(n,"[%u%d]+%.?([%u%d]*)").."f",n) or n:upper(),f or 10,t or 2
