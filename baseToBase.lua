@@ -1,34 +1,44 @@
 --brandon upshaw(newc)
 
-local function baseToBase(n,bf,bt)
-	local b,c,t,n,bf,bt,x,g,h,f={},{},0,string.format("%g",n),bf or 10,bt or 2,{},0
-	for i=65,(bf>bt and bf or bt)+55 do
-		c[#c+1]=tostring(i):char()
+local function baseToBase(n,f,t)
+	local b,c,a,p={},{},0
+	n,f,t=type(n)=='number' and string.format("%.10g",n) or n:upper(),f or 10,t or 2
+	for i=65,(f>t and f or t)+54 do
+		c[#c+1]=string.char(i)
 	end
-	n:gsub("%w",function(m)
-		if tonumber(m)>=bf or type(m)=='string' and m:upper():byte()>=bf+55 then
-			error(m)
-		end
-	end)
-	for i=#n:gsub("%.",""),1,-1 do
-		local d=n:find("%.") and (n:find("%.")-1)-i or #n:gsub("%.","")-i
-		t=t+(bf^(d))*tonumber(n:gsub("%.",""):sub(i,i))
+	local function checker(i)
+		i=tonumber(i)==nil and i or tonumber(i)
+		if type(i)=='number' then
+			if i>f then error(i..": is a invalid number") end
+		else if i:byte()>f+54 then error(i..": is an invalid number") end end
 	end
-	local i,h=math.modf(t)
-	while i>0 do
-		table.insert(x,1,(i%bt>9 and c[i%bt-9]) or string.format("%g",i%bt))
-		i=(i-i%bt)/bt
-	end
-	if h==0 then return table.concat(x) end
-	x[#x+1]="."
-	while g<10 or h~=0 do
-		f,h=math.modf(h*bt)
-		x[#x+1]=f>9 and c[f-9] or f
+	n:gsub("[%u%d]",checker)
+	p,n=-#n:match("[%u%d]+%.?([%u%d]*)"),n:gsub("%.","")
+	local g=p
+	for i=#n,1,-1 do
+		local s=c[n:byte(i,i)-64] and n:byte(i,i)-55 or tonumber(n:sub(i,i))
+		a=a+f^g*s
 		g=g+1
 	end
-	return table.concat(x)
+	local i,h,f=math.modf(a)
+	while i>0 do
+		table.insert(b,1,(i%t>9 and c[i%t-9]) or string.format("%g",i%t))
+		i=(i-i%t)/t
+	end
+	if p==0 then return table.concat(b) end
+	b[#b+1]="."
+	local o=1
+	while h~=0 or o>500 do
+		f,h=math.modf(h*t)
+		b[#b+1]=f>9 and c[f-9] or f
+		o=o+1
+	end
+	return table.concat(b)
 end
 
 print(
-	baseToBase(62.6432,9,12)
+	baseToBase("5A2",12,10),
+	baseToBase(525),
+	baseToBase("3G",21),
+	baseToBase(123261,7,14)
 )
