@@ -2,7 +2,8 @@
 
 local function baseToBase(n,f,t)
 	local b,c,a,p={},{},0
-	n,f,t=type(n)=='number' and string.format("%.10g",n) or n:upper(),f or 10,t or 2
+	n,f,t=type(n)=='number' and string.format("%."..#string.match(n,"[%u%d]+%.?([%u%d]*)").."f",n) or n:upper(),f or 10,t or 2
+	if f<2 or t<2 then error("invalid bases") end
 	for i=65,(f>t and f or t)+54 do
 		c[#c+1]=string.char(i)
 	end
@@ -20,18 +21,17 @@ local function baseToBase(n,f,t)
 		a=a+f^g*s
 		g=g+1
 	end
-	local i,h,f=math.modf(a)
+	local i,h=math.modf(a)
 	while i>0 do
 		table.insert(b,1,(i%t>9 and c[i%t-9]) or string.format("%g",i%t))
 		i=(i-i%t)/t
 	end
 	if p==0 then return table.concat(b) end
 	b[#b+1]="."
-	local o=1
-	while h~=0 or o>500 do
-		f,h=math.modf(h*t)
-		b[#b+1]=f>9 and c[f-9] or f
-		o=o+1
+	for n=1,500 do
+		i,h=math.modf(h*t)
+		b[#b+1]=i>9 and c[i-9] or i
+		if h==0 then break end
 	end
 	return table.concat(b)
 end
