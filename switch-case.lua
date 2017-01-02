@@ -1,12 +1,12 @@
 		local function switch(v)
 			return function(t)
 				local function check(k)
-					if type(k)=='function' then
-						return k
-					elseif type(k)=='string' then
-						return assert(loadstring(k))
-					end
-					return error
+					local type=type(k)
+					return(
+						type=='function' and k or
+						type=='string' and assert(loadstring(k)) or 
+						error
+					)
 				end
 				if t["case"..v] then 
 					check(t["case"..v])(v)
