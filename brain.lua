@@ -1,12 +1,14 @@
 brain={
 	array={["0"]=0};
-	pointer=0;
+	pointer="0";
 	aprint=function()
-		print("val: "..brain.array[tostring(brain.pointer)]," | ^: "..brain.pointer," | char: "..(string.char(brain.array[tostring(brain.pointer)]) or "nil"))
+		local pointer=brain.pointer
+		local val=array[pointer]
+		print("val: "..val," | ^: "..pointer," | char: "..(string.char(val) or "nil"))
 	end;
 	cell=function(s)
 		local i=s=="+" and 1 or -1
-		brain.array[tostring(brain.pointer)]=(brain.array[tostring(brain.pointer)] or 1)+i
+		brain.array[brain.pointer]=brain.array[brain.pointer]+i
 	end;
 	findloop=function(s)
 		local counter,index=0,1
@@ -19,7 +21,7 @@ brain={
 		return s:sub(1,index-1)
 	end;
 	handleloop=function(s)
-		while brain.array[tostring(brain.pointer)]>0 do
+		while brain.array[brain.pointer]>0 do
 			brain.handlestring(s:sub(2,#s-1))
 		end
 	end;
@@ -40,9 +42,9 @@ brain={
 	end;
 	move=function(s)
 		local i=s==">" and 1 or -1
-		brain.pointer=brain.pointer+i
-		if not brain.array[tostring(brain.pointer)] then
-			brain.array[tostring(brain.pointer)]=0
+		brain.pointer=tostring(tonumber(brain.pointer)+i)
+		if not brain.array[brain.pointer] then
+			brain.array[brain.pointer]=0
 		end
 	end;
 	decode=function(string)
@@ -59,7 +61,7 @@ brain={
 
 
 local code=[[
-	++++++++[
+   ++++++++[
    >++++[
     >++
     >+++
