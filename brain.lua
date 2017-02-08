@@ -21,8 +21,9 @@ brain={
 		return s:sub(1,index-1)
 	end;
 	handleloop=function(s)
+		local contents=s:sub(2,#s-1)
 		while brain.array[brain.pointer]>0 do
-			brain.handlestring(s:sub(2,#s-1))
+			brain.handlestring(contents)
 		end
 	end;
 	handlestring=function(s)
