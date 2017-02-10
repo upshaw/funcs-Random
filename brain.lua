@@ -3,7 +3,7 @@ brain={
 	pointer="0";
 	aprint=function()
 		local pointer=brain.pointer
-		local val=array[pointer]
+		local val=brain.array[pointer]
 		print("val: "..val," | ^: "..pointer," | char: "..(string.char(val) or "nil"))
 	end;
 	cell=function(s)
