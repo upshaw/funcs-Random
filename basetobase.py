@@ -32,23 +32,20 @@ def base_to_base(num,base=10,to=2):
   temp_fract, temp_int = modf(num)
   
   #parse to find all the numbers
-  find=None
+  find, boolean = None, false
   if temp_fract!=0:
     find=compile("([\u\d+]*)\.([\u\d]*)")
+    boolean=true
   else:
     find=compile("([\u\d+]*)")
   str_data = find.match(str(num))
   
-  group2=str_data.group(2)
   str_no_dec=str_data.group(1)
-  if type(group2) is not None:
-    str_no_dec+=group2
-    group2=len(group2)
-  else:
-    group2=0
+  if boolean:
+        str_no_dec+=str_data.group(2)
   
   #convert to decimal
-  idx = 0 - group2
+  idx = 0 if boolean else 0-len(str_data.group(2))
   for digit in reversed(str_no_dec):
     temp_int+=(base**idx)*float(digit)
     idx+=1
@@ -59,7 +56,7 @@ def base_to_base(num,base=10,to=2):
     temp_int//=to
   
   #check if fractional part needs converting
-  if temp_fract==0:
+  if not boolean:
     return return_bits()
   else:
     bits.append(".")
