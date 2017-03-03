@@ -1,77 +1,81 @@
-from re import compile
+from re import match
 from math import modf
 from string import ascii_uppercase
-
+ 
 def base_to_base(num,base=10,to=2):
-    
-  chars=[]
-  uppers=None
-  
-  #add chars if needed
-  max_base=max(base,to)
-  if max_base>10:
-      uppers=ascii_uppercase[:max_base-10]
-      
-  #check if number is valid
-  for digit in str(num):
-    if type(digit) is str:
-      pos=uppers.find(digit)
-      try:
-        pos==-1 or pos>=base-10
-      except Exception as error:
-        print(error)
-    else:
-      try:
-        digit>=base
-      except Exception as error:
-        print(Error)
-  
-  bits=[]
-  return_bits = lambda: "".join(bits)
-  
-  temp_fract, temp_int = modf(num)
-  
-  #parse to find all the numbers
-  find, boolean = None, false
-  if temp_fract!=0:
-    find=compile("([\u\d+]*)\.([\u\d]*)")
-    boolean=true
-  else:
-    find=compile("([\u\d+]*)")
-  str_data = find.match(str(num))
-  
-  str_no_dec=str_data.group(1)
-  if boolean:
-        str_no_dec+=str_data.group(2)
-  
-  #convert to decimal
-  idx = 0 if boolean else 0-len(str_data.group(2))
-  for digit in reversed(str_no_dec):
-    temp_int+=(base**idx)*float(digit)
-    idx+=1
-  
-  #convert integral part to __to__ base
-  while temp_int>0:
-    bits.insert(0,str(int(temp_int%to)))
-    temp_int//=to
-  
-  #check if fractional part needs converting
-  if not boolean:
-    return return_bits()
-  else:
-    bits.append(".")
-  
-  #convert fractional parts
-  idx=50
-  while idx>0:
-    temp_fract, temp_int = modf(temp_fract*to)
-    bits.append(str(int(temp_int)))
-    if temp_fract==0:
-      break
-    idx-=1
-    
-  return return_bits()
-
-
-
+	bits=[]
+	chars=[]
+	uppers=None
+	return_bits=lambda:"".join(bits)
+ 
+	def return_finds(num):
+		str_data = match(r"([\w\d+]*)\.?([\w\d]*)",str(num))
+		t=str_data.groups("0")
+		return t[0],t[1]
+ 
+	def digit_value(str):
+		if uppers:
+			pos=uppers.find(str)
+			if pos>-1:
+				return pos+1
+			else:
+				return (base**idx)*float(str)
+		else:
+			return (base**idx)*float(str)
+ 
+	def analyze_data(str):
+		try:
+			pos=uppers.find(str)
+		except:
+			pass
+		if pos:
+			if pos>=base-10:
+				print("stop")
+			elif pos==-1:
+				try:
+					digit=int(str)
+					if digit>=base:
+						print("stop")
+				except:
+					print("stop")
+ 
+		else:
+			if int(digit)>=base:
+				print("stop")
+ 
+	max_base=max(base,to)
+	if max_base>10:
+		uppers=ascii_uppercase[:max_base-10]
+ 
+	for digit in str(num):
+		analyze_data(digit)
+ 
+	intg,fract=return_finds(num)
+ 
+	idx=0-len(fract)
+	temp_int=0
+	for digit in reversed(intg+fract):
+		temp_int+=digit_value(digit)
+		idx+=1
+ 
+	while temp_int>0:
+		bits.insert(0,str(int(temp_int%to)))
+		temp_int//=to
+ 
+	if not fract!="":
+		return return_bits()
+	else:
+		bits.append(".")
+ 
+	idx=50
+	while idx>0:
+		fract, temp_int = modf(fract*to)
+		bits.append(str(int(temp_int)))
+		if fract==0:
+			break
+		idx-=1
+	return return_bits()
+ 
+ 
+ 
 print(base_to_base(62,12))
