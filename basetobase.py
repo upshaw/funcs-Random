@@ -13,15 +13,15 @@ def base_to_base(num,base=10,to=2):
 		t=str_data.groups("0")
 		return t[0],t[1]
  
-	def digit_value(str):
+	def digit_value(digit,idx):
 		if uppers:
-			pos=uppers.find(str)
+			pos=uppers.find(digit)
 			if pos>-1:
 				return pos+1
 			else:
-				return (base**idx)*float(str)
+				return (base**idx)*float(digit)
 		else:
-			return (base**idx)*float(str)
+			return (base**idx)*float(digit)
  
 	def analyze_data(str):
 		try:
@@ -55,7 +55,7 @@ def base_to_base(num,base=10,to=2):
 	idx=0-len(fract)
 	temp_int=0
 	for digit in reversed(intg+fract):
-		temp_int+=digit_value(digit)
+		temp_int+=digit_value(digit,idx)
 		idx+=1
  
 	while temp_int>0:
