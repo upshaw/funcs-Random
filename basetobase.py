@@ -26,9 +26,10 @@ def base_to_base(num,base=10,to=2):
 	def analyze_data(str):
 		try:
 			pos=uppers.find(str)
+			print(pos)
 		except:
 			pass
-		if pos:
+		if pos is not None:
 			if pos>=base-10:
 				print("stop")
 			elif pos==-1:
