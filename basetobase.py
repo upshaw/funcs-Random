@@ -40,7 +40,7 @@ def base_to_base(num,base=10,to=2):
 					print("stop")
  
 		else:
-			if int(digit)>=base:
+			if int(str)>=base:
 				print("stop")
  
 	max_base=max(base,to)
