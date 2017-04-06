@@ -5,7 +5,7 @@ local function baseToBase(n,f,t)
 	local b,c,a,p={},{},0
 	n,f,t=type(n)=='number' and string.format("%."..#string.match(n,"[%u%d]+%.?([%u%d]*)").."f",n) or n:upper(),f or 10,t or 2
 	if f<2 or t<2 then error("invalid bases") end
-	for i=65,(f>t and f or t)+54 do
+	for i=65,math.max(f,t)+54 do
 		c[#c+1]=string.char(i)
 	end
 	local function checker(i)
