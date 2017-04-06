@@ -1,0 +1,15 @@
+local function acsii_to_bin(str,base)
+	local bits={}
+	for i=1,#str do
+		local bit=str:byte(i,i)
+		local int,fract=math.modf(bit)
+		while int>0 do
+			local r=num%2
+			table.insert(bits,1,r
+			i=(i-r)/2
+		end
+	end
+	return bits
+end
+
+local function binary_to_ascii(num
