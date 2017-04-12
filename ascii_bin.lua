@@ -17,15 +17,16 @@ local function ascii_to_bin(str)
 end
  
 local function bin_to_ascii(num)
-	local bits,sum={},0
+	local bits={}
 	num=tostring(num)
 	for k in num:gmatch(("[01]"):rep(8)) do
+		local sum=0
 		for i=0,7 do
 			local idx=8-i
 			local bit=tonumber(k:sub(idx,idx))
 			sum=sum+2^i*bit
 		end
-		bits[#bits+1],sum=string.char(sum),0
+		bits[#bits+1]=string.char(sum)
 	end
 	return table.concat(bits)
 end
@@ -33,5 +34,5 @@ end
 local str="hello world"
 print(
 	ascii_to_bin(str),
-	ascii_to_bin(bin_to_ascii(str))
+	bin_to_ascii(ascii_to_bin(str))
 )
