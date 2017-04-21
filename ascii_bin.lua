@@ -14,7 +14,7 @@ local function ascii_to_bin(str)
 end
 
 local function to_ascii(t,i)
-	local i=i+1
+	local i=i and i+1 or 1
 	local v=t[v]
 	if v then
 		v=v:match(("[01]"):rep(8))
@@ -30,14 +30,8 @@ end
 
 local function bin_to_ascii(num)
 	local bits={}
-	for k in num:gmatch(("[01]"):rep(8)) do
-		local sum=0
-		for i=0,7 do
-			local idx=8-i
-			local bit=tonumber(k:sub(idx,idx))
-			sum=sum+2^i*bit
-		end
-		bits[#bits+1]=sum
+	for k in to_ascii,num do
+		bits[#bits+1]=k
 	end
 	return table.concat({string.char(unpack(bits)})
 end
