@@ -15,7 +15,7 @@ end
 
 local function to_ascii(t,i)
 	local i=i and i+1 or 1
-	local v=t[v]
+	local v=t[i]
 	if v then
 		v=v:match(("[01]"):rep(8))
 		local sum=0
@@ -24,7 +24,7 @@ local function to_ascii(t,i)
 			local bit=tonumber(v:sub(idx,idx))
 			sum=sum+2^x*bit
 		end
-		return v:match(("[01]"):rep(8))	
+		return sum	
 	end
 end
 
