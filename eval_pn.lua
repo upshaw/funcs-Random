@@ -1,5 +1,5 @@
-local unary={["~"]=true,["!"]=true}
-local operators;operators={
+unary={["~"]=true,["!"]=true}
+operators={
 	["+"]=function(a,b) return a+b end,
 	["-"]=function(a,b) return a-b end,
 	["*"]=function(a,b) return a*b end,
@@ -19,9 +19,8 @@ function extract(expr,verbose)
 		local op=expr:sub(1,i-1):match("%s-(%S-)%s-$")
 		local op0=expr:match("%S+",i)
 		local op1=expr:match("[^%s]+",#op0+i+1)
-		local pr=operators[op]
-		if op0 and not operators[op0] and op0~=op then
-			if not pr or not op or expr:match(".#INF") then
+		if #op>0 and #op<3 and op0 and not operators[op0] and op0~=op then
+			if not op and not operators[op] or expr:match(".#INF") then
 				return expr
 			end
 			op0,op1=tonumber(op0),tonumber(op1)
@@ -29,7 +28,7 @@ function extract(expr,verbose)
 			lb1=op1 and #tostring(op1) or 0
 			if (op0 and not operators[op0]) and ((op1 and not operators[op1]) or unary[op]) then
 				local n=unary[op] and i+lb0+1 or i+lb0+lb1+2
-				expr=expr:sub(1,i-#op-1)..tostring(pr(op0,op1))..expr:sub(n)
+				expr=expr:sub(1,i-#op-1)..tostring(operators[op](op0,op1))..expr:sub(n)
 				i=1
 			else
 				i=operators[op0] and i+lb0+1 or i+lb0+lb1+2
@@ -40,7 +39,6 @@ function extract(expr,verbose)
 	end				
 end
 
-local expression="/ 33.6 + * 2 ~ 7 ! 4"
-local verbose=true --print out each expression to be evaluated
-
+expression="/ 6.6 + * 2 7 4"
+verbose=true --print out each expression to be evaluated
 print("\nresult: ",extract(expression,verbose))
